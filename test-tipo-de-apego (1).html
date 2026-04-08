@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test: ¿Cuál es tu tipo de apego? — Feliz y en Pareja</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f7f4f9;
+    min-height: 100vh;
+    padding: 1.5rem 1rem 3rem;
+    color: #1a1a2e;
+  }
+
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  /* ── COVER ── */
+  .cover {
+    background: #1a0533;
+    border-radius: 22px;
+    overflow: hidden;
+    position: relative;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .cover-deco { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .cb { position: absolute; border-radius: 50%; }
+  .cb1 { width: 380px; height: 380px; background: #D4537E; top: -120px; right: -80px; opacity: 0.12; }
+  .cb2 { width: 260px; height: 260px; background: #7F77DD; bottom: -60px; left: -60px; opacity: 0.12; }
+  .cb3 { width: 180px; height: 180px; background: #5DCAA5; top: 40%; left: 10%; opacity: 0.12; }
+  .grain {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .cover-inner { position: relative; z-index: 2; padding: 3rem 2rem; }
+
+  .brand-wrap { display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 2rem; }
+  .brand-logo {
+    width: 44px; height: 44px;
+    background: #D4537E;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .brand-logo svg { width: 24px; height: 24px; }
+  .brand-text { text-align: left; }
+  .brand-name { font-size: 14px; font-weight: 600; color: #fff; }
+  .brand-sub { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .cover-pill {
+    display: inline-block;
+    background: rgba(212,83,126,0.22);
+    border: 0.5px solid rgba(212,83,126,0.5);
+    color: #F4C0D1;
+    font-size: 10px; font-weight: 600;
+    padding: 5px 14px; border-radius: 20px;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+
+  .cover-title {
+    font-size: 32px; font-weight: 700;
+    color: #fff; line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .cover-title span { color: #ED93B1; }
+
+  .cover-desc {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.8;
+    max-width: 400px;
+    margin: 0 auto 2rem;
+    font-weight: 300;
+  }
+
+  .cover-stats { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 2rem; }
+  .stat { text-align: center; }
+  .stat-n { font-family: 'Lora', serif; font-size: 26px; font-weight: 600; color: #fff; }
+  .stat-l { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat-div { width: 0.5px; background: rgba(255,255,255,0.12); align-self: stretch; margin: 4px 0; }
+
+  .btn-start {
+    background: #D4537E; color: #fff; border: none;
+    padding: 15px 44px; border-radius: 12px;
+    font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+    font-family: inherit;
+    letter-spacing: 0.01em;
+  }
+  .btn-start:hover { background: #b83d68; transform: translateY(-1px); }
+  .cover-foot { font-size: 11px; color: rgba(255,255,255,0.22); margin-top: 1.5rem; }
+
+  /* ── TEST ── */
+  .test-body { padding-top: 1.5rem; }
+
+  .mini-brand { display: flex; align-items: center; gap: 8px; margin-bottom: 1.25rem; }
+  .mini-logo {
+    width: 28px; height: 28px; background: #D4537E;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  }
+  .mini-logo svg { width: 15px; height: 15px; }
+  .mini-name { font-size: 12px; font-weight: 600; color: #993556; }
+  .mini-sep { font-size: 12px; color: #bbb; }
+  .mini-sub { font-size: 12px; color: #999; }
+
+  .prog-wrap { margin-bottom: 1.5rem; }
+  .prog-track { height: 5px; background: #F4C0D1; border-radius: 4px; }
+  .prog-fill { height: 5px; border-radius: 4px; background: #D4537E; transition: width 0.4s ease; }
+  .prog-lbl { font-size: 11px; color: #aaa; margin-top: 6px; text-align: right; }
+
+  .q-card {
+    background: #fff;
+    border: 0.5px solid #e8e0f0;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .q-num {
+    font-size: 11px; font-weight: 700;
+    color: #993556; text-transform: uppercase;
+    letter-spacing: 0.07em; margin-bottom: 10px;
+  }
+  .q-text {
+    font-size: 16px; font-weight: 600;
+    color: #1a0533; line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .opt {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 14px;
+    border: 0.5px solid #e0d8ec;
+    border-radius: 11px; margin-bottom: 8px;
+    cursor: pointer; transition: all 0.15s;
+    background: #fff;
+  }
+  .opt:hover { border-color: #D4537E; background: #fff5f8; }
+  .opt.sel { border-color: #D4537E; background: #fff0f5; }
+  .opt.sel .opt-l { background: #D4537E; color: #fff; }
+  .opt-l {
+    min-width: 29px; height: 29px; border-radius: 50%;
+    background: #f3eef8;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: #888;
+    flex-shrink: 0; transition: all 0.15s;
+  }
+  .opt-t { font-size: 14px; color: #2a1a3e; line-height: 1.6; padding-top: 3px; }
+
+  .nav {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-top: 1.5rem;
+  }
+  .btn-nav {
+    padding: 11px 24px; border-radius: 10px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; border: 0.5px solid #d0c8dc;
+    background: transparent; color: #333;
+    transition: all 0.15s;
+  }
+  .btn-nav:hover { background: #f3eef8; }
+  .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+  .btn-main { background: #D4537E; color: #fff; border-color: #D4537E; }
+  .btn-main:hover { background: #b83d68; border-color: #b83d68; }
+
+  /* ── RESULTS ── */
+  .res-hero {
+    background: #1a0533;
+    border-radius: 20px;
+    padding: 2.75rem 1.75rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    position: relative; overflow: hidden;
+  }
+  .rh-deco { position: absolute; inset: 0; pointer-events: none; }
+  .rh-c1 { position: absolute; width: 300px; height: 300px; border-radius: 50%; top: -100px; right: -80px; opacity: 0.12; }
+  .rh-c2 { position: absolute; width: 200px; height: 200px; border-radius: 50%; bottom: -60px; left: -50px; opacity: 0.12; }
+  .rh-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 22px 22px; pointer-events: none; }
+  .res-hero-inner { position: relative; z-index: 2; }
+  .res-brand-lbl { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.25rem; }
+  .res-icon-wrap {
+    width: 80px; height: 80px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.1rem; font-size: 36px;
+    border: 1.5px solid rgba(255,255,255,0.12);
+  }
+  .res-type-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .res-main-name {
+    font-family: 'Lora', serif;
+    font-size: 30px; font-weight: 700; color: #fff;
+    margin-bottom: 10px; line-height: 1.2;
+  }
+  .res-tagline { font-size: 14px; color: rgba(255,255,255,0.48); line-height: 1.7; font-weight: 300; }
+
+  .scores { margin: 1.5rem 0; }
+  .sc-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 13px; border-radius: 10px;
+    background: #f7f4f9; margin-bottom: 6px;
+  }
+  .sc-row.top { background: #fff0f5; border: 0.5px solid #F4C0D1; }
+  .sc-lbl { font-size: 13px; font-weight: 600; color: #1a0533; width: 170px; flex-shrink: 0; }
+  .sc-bar-bg { flex: 1; background: #e5dff0; border-radius: 4px; height: 6px; }
+  .sc-bar-fg { height: 6px; border-radius: 4px; background: #ED93B1; }
+  .sc-row.top .sc-bar-fg { background: #D4537E; }
+  .sc-n { font-size: 12px; font-weight: 600; color: #888; width: 22px; text-align: right; }
+
+  .r-card {
+    background: #fff; border: 0.5px solid #e8e0f0;
+    border-radius: 16px; padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .r-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .r-icon-box {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .r-name { font-size: 16px; font-weight: 700; color: #1a0533; }  .r-tag {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 20px;
+    margin-bottom: 14px; margin-left: 50px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .r-tag-p { background: #fff0f5; color: #72243E; }
+  .r-tag-s { background: #f7f4f9; color: #666; }
+
+  .r-section { margin-bottom: 12px; }
+  .r-section-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #D4537E; margin-bottom: 5px;
+  }
+  .r-section p {
+    font-size: 14px; color: #4a3a5a; line-height: 1.75;
+  }
+  .r-div { height: 0.5px; background: #ede8f4; margin: 12px 0; }
+
+  .tie-box {
+    background: #fff0f5; border: 0.5px solid #F4C0D1;
+    border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1rem;
+  }
+  .tie-box p { font-size: 14px; color: #72243E; line-height: 1.75; }
+  .tie-box strong { font-weight: 700; color: #4B1528; }
+
+  .reflection {
+    background: #1a0533; border-radius: 16px;
+    padding: 1.75rem; margin: 1.5rem 0;
+    position: relative; overflow: hidden;
+  }
+  .refl-grain { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 20px 20px; pointer-events: none; }
+  .refl-inner { position: relative; z-index: 2; }
+  .refl-lbl { font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 10px; }
+  .refl-text {
+    font-size: 15px; color: rgba(255,255,255,0.82);
+    line-height: 1.8; font-style: italic;
+  }
+  .refl-author { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 12px; }
+
+  .res-footer { text-align: center; padding: 1rem 0 2rem; }
+  .res-footer p { font-size: 13px; color: #888; margin-bottom: 1rem; }
+  .btn-restart {
+    padding: 12px 30px; border-radius: 10px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; border: 1.5px solid #D4537E;
+    background: transparent; color: #D4537E;
+    transition: all 0.15s;
+  }
+  .btn-restart:hover { background: #fff0f5; }
+
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- PORTADA -->
+  <div id="cover">
+    <div class="cover">
+      <div class="cover-deco">
+        <div class="cb cb1"></div>
+        <div class="cb cb2"></div>
+        <div class="cb cb3"></div>
+        <div class="grain"></div>
+      </div>
+      <div class="cover-inner">
+        <div class="brand-wrap">
+          <div class="brand-logo">
+            <svg viewBox="0 0 26 26" fill="none"><path d="M13 22s-9-5.5-9-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-9 11-9 11z" fill="#fff"/></svg>
+          </div>
+          <div class="brand-text">
+            <div class="brand-name">Feliz y en Pareja</div>
+            <div class="brand-sub">Escuela del amor</div>
+          </div>
+        </div>
+        <div class="cover-pill">Test de pareja</div>
+        <div class="cover-title">Descubre tu<br><span>tipo de apego</span></div>
+        <div class="cover-desc">Tu tipo de apego revela cómo reaccionas cuando el amor se acerca, se aleja o se vuelve incierto… entenderlo te da claridad sobre lo que sientes, haces y necesitas en una relación.</div>
+        <div class="cover-stats">
+          <div class="stat"><div class="stat-n">16</div><div class="stat-l">preguntas</div></div>
+          <div class="stat-div"></div>
+          <div class="stat"><div class="stat-n">4</div><div class="stat-l">tipos</div></div>
+          <div class="stat-div"></div>
+          <div class="stat"><div class="stat-n">~6</div><div class="stat-l">minutos</div></div>
+        </div>
+        <button class="btn-start" onclick="startTest()">Comenzar test</button>
+        <div class="cover-foot">Basado en la teoría del apego · Bowlby &amp; Ainsworth</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEST -->
+  <div id="test" class="test-body hidden">
+    <div class="mini-brand">
+      <div class="mini-logo">
+        <svg viewBox="0 0 26 26" fill="none"><path d="M13 22s-9-5.5-9-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-9 11-9 11z" fill="#fff"/></svg>
+      </div>
+      <span class="mini-name">Feliz y en Pareja</span>
+      <span class="mini-sep">·</span>
+      <span class="mini-sub">Escuela del amor</span>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+      <div class="prog-lbl" id="prog-lbl">Pregunta 1 de 16</div>
+    </div>
+    <div id="q-container"></div>
+    <div class="nav">
+      <button class="btn-nav" id="btn-prev" onclick="prevQ()" disabled>Anterior</button>
+      <button class="btn-nav btn-main" id="btn-next" onclick="nextQ()" disabled>Siguiente</button>
+    </div>
+  </div>
+
+  <!-- RESULTADOS -->
+  <div id="results" class="hidden"></div>
+
+</div>
+
+<script>
+// SE=Seguro, AN=Ansioso, EV=Evitativo, DE=Desorganizado
+var QS = [
+  {
+    t: "Tu pareja no te ha contestado los mensajes en varias horas. ¿Qué pasa por tu cabeza?",
+    o: [
+      {l:'SE', t:"Nada especial. Estará ocupada. Ya me contestará cuando pueda."},
+      {l:'AN', t:"Empiezo a hacer teorías: ¿Le pasó algo? ¿Está enojada conmigo? ¿Le perdí el interés?"},
+      {l:'EV', t:"Bien. Aprovecho para hacer lo mío. No me gusta estar pendiente del teléfono."},
+      {l:'DE', t:"Me entra una mezcla rara: quiero mandarle otro mensaje y al mismo tiempo desaparecer yo también."}
+    ]
+  },
+  {
+    t: "Tu pareja quiere hablar de algo serio en la relación. ¿Cuál es tu reacción inicial?",
+    o: [
+      {l:'SE', t:"Está bien, hablemos. Me interesa saber qué está pensando."},
+      {l:'AN', t:"El estómago se me cae. ¿Qué hice mal? ¿Quiere terminar?"},
+      {l:'EV', t:"Me pongo en guardia. Las conversaciones serias casi siempre terminan en drama."},
+      {l:'DE', t:"Me paralizo. Quiero escuchar pero algo en mí ya quiere salir corriendo."}
+    ]
+  },
+  {
+    t: "Tu pareja dice que necesita un poco de espacio esta semana. ¿Cómo lo vives?",
+    o: [
+      {l:'SE', t:"Lo entiendo. Yo también necesito espacio a veces. No tiene nada que ver conmigo."},
+      {l:'AN', t:"Me cuesta muchísimo. Necesito saber el porqué, si estoy bien con ella/él, qué significa exactamente."},
+      {l:'EV', t:"Con alivio, honestamente. Un poco de distancia me viene bien."},
+      {l:'DE', t:"No sé si creerle. Siento que el espacio es el principio del fin, pero tampoco digo nada."}
+    ]
+  },
+  {
+    t: "Llevan dos años juntos. Tu pareja te dice que te ama. ¿Cómo te sientes?",
+    o: [
+      {l:'SE', t:"Bien, contento/a. Se lo digo también sin pensarlo mucho."},
+      {l:'AN', t:"Feliz, pero al rato me pregunto si de verdad lo dice en serio o es costumbre."},
+      {l:'EV', t:"Un poco incómodo/a. No sé bien qué hacer con eso. Quizás lo digo de vuelta para no quedar raro/a."},
+      {l:'DE', t:"Me activa algo contradictorio: quiero creerlo y al mismo tiempo me asusta que sea real."}
+    ]
+  },
+  {
+    t: "Discutieron fuerte. Tu pareja se va de la habitación sin decir nada. ¿Qué haces?",
+    o: [
+      {l:'SE', t:"Le doy espacio un rato y después voy a retomar la conversación con calma."},
+      {l:'AN', t:"La sigo o le mando mensajes enseguida. No soporto que se quede así."},
+      {l:'EV', t:"Me quedo donde estoy. Cuando se le pase hablamos, si hay algo que hablar."},
+      {l:'DE', t:"Me quedo paralizado/a. Quiero ir pero siento que si voy empeora. No sé qué hacer con mis manos."}
+    ]
+  },
+  {
+    t: "Tu pareja es muy cariñosa y busca mucha cercanía. ¿Cómo lo vives?",
+    o: [
+      {l:'SE', t:"Me gusta. Recibo el afecto y también lo doy. Me siento cómodo/a."},
+      {l:'AN', t:"Me encanta, pero a veces lo interpreto como una prueba para ver si yo también lo doy igual."},
+      {l:'EV', t:"Me puede llegar a agotar. Necesito mis momentos sin tanto contacto."},
+      {l:'DE', t:"Al principio me llena, pero después me empieza a incomodar sin entender por qué."}
+    ]
+  },
+  {
+    t: "¿Cuál de estas frases describe mejor tu forma de entrar a una relación?",
+    o: [
+      {l:'SE', t:"Con confianza. Sé lo que quiero y no necesito que todo sea perfecto para comprometerme."},
+      {l:'AN', t:"Con mucha ilusión pero también con miedo. Me entrego rápido y me preocupa que el otro no haga lo mismo."},
+      {l:'EV', t:"Con cautela. Me cuesta abrirme y prefiero ir lento aunque eso signifique perder oportunidades."},
+      {l:'DE', t:"Arranco bien pero en algún punto me autosaboteo o me asusta que vaya demasiado bien."}
+    ]
+  },
+  {
+    t: "Tu pareja está pasando por algo difícil y está emocionalmente ausente. ¿Qué sientes?",
+    o: [
+      {l:'SE', t:"Le doy espacio y le recuerdo que estoy cuando me necesite. No lo personalizo."},
+      {l:'AN', t:"Me angustia. Siento que su distancia tiene que ver conmigo aunque me diga que no."},
+      {l:'EV', t:"Bien. Cuando los dos tenemos nuestro mundo propio, la relación funciona mejor."},
+      {l:'DE', t:"Quiero ayudar pero no sé cómo acercarme. Termino alejándome también por no saber qué hacer."}
+    ]
+  },
+  {
+    t: "¿Qué pasa cuando alguien te importa mucho y lo sabes?",
+    o: [
+      {l:'SE', t:"Me siento bien. No me genera ansiedad. La quiero y ya."},
+      {l:'AN', t:"Me vuelvo más dependiente de señales de que el sentimiento es mutuo. Necesito confirmación constante."},
+      {l:'EV', t:"Me pone nervioso/a. Si importa demasiado, hay más que perder. Empiezo a poner distancia."},
+      {l:'DE', t:"Me desestabiliza. Me da miedo perder esa persona y al mismo tiempo me dan ganas de salir corriendo."}
+    ]
+  },
+  {
+    t: "Tu ex terminó contigo de forma inesperada. ¿Cómo sueles reaccionar?",
+    o: [
+      {l:'SE', t:"Me duele, claro. Pero proceso, entiendo que no era para mí y sigo."},
+      {l:'AN', t:"Me cuesta soltar. Repaso todo mil veces buscando qué hice mal o si hay forma de recuperarlo."},
+      {l:'EV', t:"Me activo en automático: trabajo más, me ocupo más. Me niego a que me vean mal."},
+      {l:'DE', t:"Es caótico. A veces quiero retomarlo, a veces lo odio, a veces no siento nada. Todo a la vez."}
+    ]
+  },
+  {
+    t: "¿Cuál de estas frases podrías decir tú en una relación?",
+    o: [
+      {l:'SE', t:"'Si hay algo que no te gusta, dímelo y lo hablamos. No tengo problema.'"},
+      {l:'AN', t:"'¿Estás bien conmigo? ¿Seguro que no estás enojado/a? Porque siento algo raro.'"},
+      {l:'EV', t:"'No me gusta hablar de sentimientos en el momento. Dame tiempo y luego hablamos.'"},
+      {l:'DE', t:"'No sé qué me pasa. Te quiero pero a veces me entran ganas de desaparecer un rato.'"}
+    ]
+  },
+  {
+    t: "Tu pareja te propone algo nuevo e íntimo (emocionalmente, no físicamente). ¿Cómo respondes?",
+    o: [
+      {l:'SE', t:"Con apertura. Me gusta profundizar con la persona que quiero."},
+      {l:'AN', t:"Emocionado/a, pero enseguida pienso: ¿y si me comparto y luego se va?"},
+      {l:'EV', t:"Un poco incómodo/a. Prefiero la intimidad que llega sola, no la que se propone."},
+      {l:'DE', t:"Quiero hacerlo pero algo me frena. No sé si es miedo, desconfianza o qué."}
+    ]
+  },
+  {
+    t: "¿Qué tan fácil te resulta pedir ayuda a tu pareja cuando algo te preocupa?",
+    o: [
+      {l:'SE', t:"Bastante fácil. Para eso está la relación."},
+      {l:'AN', t:"Lo hago pero con miedo a parecer demasiado necesitado/a o cargar demasiado."},
+      {l:'EV', t:"Prefiero resolverlo solo/a. No me gusta depender de nadie, ni de mi pareja."},
+      {l:'DE', t:"Me cuesta muchísimo. A veces lo intento y luego me arrepiento de haberlo hecho."}
+    ]
+  },
+  {
+    t: "Cuando la relación va muy bien, ¿qué suele pasar en tu cabeza?",
+    o: [
+      {l:'SE', t:"Disfruto. Me parece lo normal cuando las cosas están bien encaminadas."},
+      {l:'AN', t:"Estoy bien pero a veces espero que algo se rompa. ¿Puede durar esto?"},
+      {l:'EV', t:"A veces siento que va demasiado bien y empiezo a buscarle defectos."},
+      {l:'DE', t:"Me pongo nervioso/a. El bienestar me parece sospechoso, como si no lo mereciera."}
+    ]
+  },
+  {
+    t: "Tu pareja critica algo que hiciste, aunque sea con buena intención. ¿Qué sientes?",
+    o: [
+      {l:'SE', t:"Lo escucho, evalúo si tiene razón y respondo sin tomarme demasiado a pecho."},
+      {l:'AN', t:"Me duele más de la cuenta. Lo interpreto como que no soy suficiente."},
+      {l:'EV', t:"Me molesta que me señalen. Prefiero que no se metan en cómo hago mis cosas."},
+      {l:'DE', t:"Me bloqueo. Quiero defenderme y también quiero desaparecer. No sé qué cara poner."}
+    ]
+  },
+  {
+    t: "Si tuvieras que describir cómo te sientes en la mayoría de tus relaciones, ¿cuál encaja más?",
+    o: [
+      {l:'SE', t:"Generalmente cómodo/a. Sé que no somos perfectos pero hay confianza."},
+      {l:'AN', t:"Bastante inseguro/a. Siempre siento que amo más yo o que el otro se puede ir."},
+      {l:'EV', t:"Relativamente bien, pero necesito mi espacio y no siempre me dejo querer del todo."},
+      {l:'DE', t:"Confuso/a. Hay momentos buenos pero también momentos en que todo se desordena por dentro."}
+    ]
+  }
+];
+
+var RES = {
+  SE: {
+    name: "Apego seguro",
+    icon: "🌿",
+    color: "#3A6B4A",
+    bg: "#eaf4ee",
+    tagline: "Confías. Te entregas. Y sabes que si algo se rompe, no te rompes tú.",
+    desc: "Tienes una base emocional estable. No necesitas validación constante para saber que eres querido/a, y tampoco huyes cuando las cosas se ponen serias. Puedes estar cerca sin perder tu propio espacio, y alejarte sin que eso se sienta como abandono.",
+    enR: "En la relación eres de los que hablan cuando algo molesta, sin esperar que el otro lo adivine. Puedes recibir afecto sin sospechar y puedes dar espacio sin interpretarlo como rechazo. Eso no significa que no tengas conflictos: significa que tienes recursos para navegarlos.",
+    siente: "Generalmente tranquilidad. No es que no te duelan las cosas, es que no te destruyen. Cuando algo va mal, buscas entenderlo en lugar de catastrofizarlo.",
+    error: "A veces das por sentado que el otro tiene la misma regulación emocional que tú. Lo que a ti te parece obvio ('hablemos y listo') para otra persona puede ser un proceso largo y difícil.",
+    trabaja: "Aprender que no todo el mundo llegó con tu misma mochila. La paciencia con los ritmos emocionales distintos es el músculo que más vale la pena entrenar."
+  },
+  AN: {
+    name: "Apego ansioso",
+    icon: "🌊",
+    color: "#2B5F8E",
+    bg: "#e8f1f9",
+    tagline: "Amas con intensidad. El problema es que a veces amas más el miedo a perder que a la persona en sí.",
+    desc: "Tu sistema de alarma emocional está muy activo. Cuando alguien te importa, también te activa: necesitas saber que está, que sigue, que no se va a ir. Eso no es debilidad. Es que aprendiste a vincularte en un ambiente donde el afecto no siempre era predecible.",
+    enR: "Buscas señales constantemente: un mensaje que tarda, un tono diferente, un 'hoy estoy cansado' que interpretas como 'estoy harto de ti'. Te entregas rápido y esperas lo mismo del otro. Cuando no ocurre, la angustia llega antes que la conversación.",
+    siente: "Mucha intensidad. Y una pregunta de fondo que nunca termina de callarse: ¿soy suficiente? ¿Me va a dejar? ¿Es real lo que siento o me estoy engañando?",
+    error: "Hacer del otro tu regulador emocional. Cuando tu bienestar depende de que la otra persona esté disponible, tranquila y cariñosa en todo momento, eso es demasiado peso para cualquier relación.",
+    trabaja: "Aprender a calmarte a ti mismo/a antes de buscar esa calma en el otro. No para no necesitar, sino para no hacer del amor una fuente de ansiedad permanente."
+  },
+  EV: {
+    name: "Apego evitativo",
+    icon: "🏔️",
+    color: "#6B4A1E",
+    bg: "#f5ede0",
+    tagline: "No es que no quieras. Es que aprendiste que querer demasiado te dejaba en una posición vulnerable.",
+    desc: "Eres autosuficiente. Te las arreglas solo/a y eso te da orgullo. Pero en las relaciones, esa independencia a veces se convierte en un muro. No porque no sientas, sino porque sentir demasiado te parece peligroso. La cercanía, aunque la deseas, también te incomoda.",
+    enR: "Cuando alguien se acerca mucho, algo en ti da un paso atrás. No siempre lo decides conscientemente. También tiendes a valorar más la relación cuando hay distancia, y a necesitar más espacio del que tu pareja suele estar dispuesta a dar.",
+    siente: "Comodidad en la soledad y una incomodidad difícil de explicar cuando alguien quiere mucho de ti. A veces sientes que las relaciones son más una carga que un alivio.",
+    error: "Confundir independencia con invulnerabilidad. Decirte que no necesitas a nadie cuando en el fondo sí lo necesitas, pero mostrar eso te parece demasiado.",
+    trabaja: "Distinguir entre el espacio saludable y la distancia como mecanismo de defensa. Y aprender que dejarse querer no significa perder el control de quién eres."
+  },
+  DE: {
+    name: "Apego desorganizado",
+    icon: "🌀",
+    color: "#7B4A8A",
+    bg: "#f2eaf7",
+    tagline: "Quieres cercanía y también te aterra. No es contradicción: es lo que aprendiste a hacer para sobrevivir.",
+    desc: "Tienes los dos sistemas activos al mismo tiempo: el que quiere conexión y el que la percibe como amenaza. Eso genera patrones contradictorios que a veces ni tú entiendes. No es que estés roto/a. Es que en algún momento de tu historia, las personas que debían darte seguridad también fueron fuente de miedo o dolor.",
+    enR: "Puedes pasar del todo a la nada sin entender bien qué lo detonó. Tu pareja a veces no sabe qué esperar de ti porque tú tampoco lo sabes. Las discusiones pueden escalar rápido o cerrarte por completo. Y aunque quieres una relación estable, algo en ti la sabotea justo cuando empieza a serlo.",
+    siente: "Un estado interno confuso y agotador. Como querer huir de lo mismo que estás buscando. Mucha intensidad emocional que no siempre tiene una causa clara.",
+    error: "Interpretar el amor estable como algo sospechoso. Si estás acostumbrado/a al caos emocional, la calma puede sentirse aburrida o falsa. Y eso puede llevarte a generar conflicto donde no lo hay.",
+    trabaja: "Entender que la calma no es la antesala del abandono. El trabajo aquí suele pasar por acompañamiento profesional, porque los patrones desorganizados tienen raíces profundas que vale la pena explorar con apoyo."
+  }
+};
+
+var TNAMES = {SE:"Apego seguro", AN:"Apego ansioso", EV:"Apego evitativo", DE:"Apego desorganizado"};
+var cur = 0, ans = new Array(16).fill(null);
+
+function startTest() {
+  document.getElementById('cover').classList.add('hidden');
+  document.getElementById('test').classList.remove('hidden');
+  renderQ();
+}
+
+function renderQ() {
+  var q = QS[cur];
+  document.getElementById('prog').style.width = Math.round((cur / 16) * 100) + '%';
+  document.getElementById('prog-lbl').textContent = 'Pregunta ' + (cur + 1) + ' de 16';
+  document.getElementById('btn-prev').disabled = cur === 0;
+  document.getElementById('btn-next').disabled = ans[cur] === null;
+  document.getElementById('btn-next').textContent = cur === 15 ? 'Ver mi resultado' : 'Siguiente';
+  var ltrs = ['A', 'B', 'C', 'D'];
+  var h = '<div class="q-card"><div class="q-num">Pregunta ' + (cur + 1) + '</div><div class="q-text">' + q.t + '</div>';
+  q.o.forEach(function (o, i) {
+    h += '<div class="opt' + (ans[cur] === i ? ' sel' : '') + '" onclick="pick(' + i + ')"><div class="opt-l">' + ltrs[i] + '</div><div class="opt-t">' + o.t + '</div></div>';
+  });
+  h += '</div>';
+  document.getElementById('q-container').innerHTML = h;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function pick(i) { ans[cur] = i; renderQ(); }
+function prevQ() { if (cur > 0) { cur--; renderQ(); } }
+function nextQ() { if (ans[cur] === null) return; if (cur < 15) { cur++; renderQ(); } else showResult(); }
+
+function showResult() {
+  var sc = { SE: 0, AN: 0, EV: 0, DE: 0 };
+  QS.forEach(function (q, qi) { if (ans[qi] !== null) sc[q.o[ans[qi]].l]++; });
+  var sorted = ['SE', 'AN', 'EV', 'DE'].sort(function (a, b) { return sc[b] - sc[a]; });
+  var top = sorted[0], maxS = sc[top];
+  var tied = sorted.filter(function (l) { return sc[l] === maxS; });
+  var r = RES[top];
+
+  document.getElementById('test').classList.add('hidden');
+  var rs = document.getElementById('results');
+  rs.classList.remove('hidden');
+
+  var h = '<div class="res-hero">';
+  h += '<div class="rh-deco"><div class="rh-c1" style="background:' + r.color + '"></div><div class="rh-c2" style="background:' + r.color + '"></div><div class="rh-dots"></div></div>';
+  h += '<div class="res-hero-inner">';
+  h += '<div class="res-brand-lbl">Feliz y en Pareja · Escuela del amor</div>';
+  h += '<div class="res-icon-wrap" style="background:' + r.color + '28"><span>' + r.icon + '</span></div>';
+  h += '<div class="res-type-lbl">Tu tipo de apego</div>';
+  h += '<div class="res-main-name" style="color:' + r.color + '">' + r.name + '</div>';
+  h += '<div class="res-tagline">' + r.tagline + '</div>';
+  h += '</div></div>';
+
+  // Scores
+  h += '<div class="scores">';
+  sorted.forEach(function (l) {
+    var pct = Math.round((sc[l] / 16) * 100);
+    h += '<div class="sc-row' + (l === top ? ' top' : '') + '"><div class="sc-lbl">' + TNAMES[l] + '</div><div class="sc-bar-bg"><div class="sc-bar-fg" style="width:' + pct + '%"></div></div><div class="sc-n">' + sc[l] + '</div></div>';
+  });
+  h += '</div>';
+
+  // Tie
+  if (tied.length > 1) {
+    h += '<div class="tie-box"><p>Tienes empate entre <strong>' + tied.map(function (l) { return TNAMES[l]; }).join(' y ') + '</strong>. Eso no es raro: muchas personas combinan más de un estilo de apego dependiendo del contexto y de la persona con quien estén. Lee los dos resultados y quédate con lo que más te resuene.</p></div>';
+  }
+
+  // Primary card
+  h += '<div class="r-card">';
+  h += '<div class="r-head"><div class="r-icon-box" style="background:' + r.bg + '"><span>' + r.icon + '</span></div><div class="r-name">' + r.name + '</div></div>';
+  h += '<div class="r-tag r-tag-p">Tu apego predominante</div>';
+  h += '<div class="r-section"><div class="r-section-label">Qué es</div><p>' + r.desc + '</p></div><div class="r-div">';
+  h += '</div><div class="r-section"><div class="r-section-label">Cómo se ve en tu relación</div><p>' + r.enR + '</p></div><div class="r-div">';
+  h += '</div><div class="r-section"><div class="r-section-label">Qué sueles sentir</div><p>' + r.siente + '</p></div><div class="r-div">';
+  h += '</div><div class="r-section"><div class="r-section-label">Error que sueles repetir</div><p>' + r.error + '</p></div><div class="r-div">';
+  h += '</div><div class="r-section"><div class="r-section-label">Qué vale la pena trabajar</div><p>' + r.trabaja + '</p></div>';
+  h += '</div>';
+
+  // Secondary card
+  if (sorted.length > 1 && sc[sorted[1]] > 0 && sorted[1] !== top) {
+    var r2 = RES[sorted[1]];
+    h += '<div class="r-card">';
+    h += '<div class="r-head"><div class="r-icon-box" style="background:' + r2.bg + '"><span>' + r2.icon + '</span></div><div class="r-name">' + r2.name + '</div></div>';
+    h += '<div class="r-tag r-tag-s">Tu segundo estilo</div>';
+    h += '<div class="r-section"><p>' + r2.desc + '</p></div><div class="r-div">';
+    h += '</div><div class="r-section"><div class="r-section-label">Qué vale la pena trabajar</div><p>' + r2.trabaja + '</p></div>';
+    h += '</div>';
+  }
+
+  // Reflection
+  h += '<div class="reflection"><div class="refl-grain"></div><div class="refl-inner">';
+  h += '<div class="refl-lbl">Para llevarte</div>';
+  h += '<div class="refl-text">"Tu tipo de apego revela cómo reaccionas cuando el amor se acerca, se aleja o se vuelve incierto… entenderlo te da claridad sobre lo que sientes, haces y necesitas en una relación."</div>';
+  h += '<div class="refl-author">— Feliz y en Pareja · Escuela del amor</div>';
+  h += '</div></div>';
+
+  h += '<div class="res-footer"><p>Comparte este test con tu pareja y comparen sus estilos de apego</p><button class="btn-restart" onclick="restartAll()">Hacer el test de nuevo</button></div>';
+
+  rs.innerHTML = h;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartAll() {
+  cur = 0; ans = new Array(16).fill(null);
+  document.getElementById('results').classList.add('hidden');
+  document.getElementById('test').classList.add('hidden');
+  document.getElementById('cover').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
